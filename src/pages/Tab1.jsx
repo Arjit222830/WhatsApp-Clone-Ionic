@@ -9,9 +9,8 @@ import "../App.css";
 
 const Tab1 = () => {
   const {state, dispatch}=  useContext(AppContext);
-
+  
   useIonViewWillEnter(()=>{
-    console.log("IonViewEnter ChatItem");
     dispatch(setNoTabs(false));
     dispatch(setChattingWith({}));
 },[]);

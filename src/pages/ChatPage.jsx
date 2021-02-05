@@ -23,7 +23,6 @@ const ChatPage= ()=>{
     let messageSubscription= useRef(null);
 
     useIonViewWillEnter(async()=>{
-        
         dispatch(setNoTabs(true));
         let channel1= `${state.user.user_id},${state.chattingWith.user_id}`;
         let channel2= `${state.chattingWith.user_id},${state.user.user_id}`;
@@ -33,6 +32,7 @@ const ChatPage= ()=>{
             .limit(100)
             .onSnapshot((querySnapshot)=>{
                 let messages=[];
+           
                 querySnapshot.forEach((doc)=>{
                     messages.push(doc.data());
                 });
@@ -45,15 +45,17 @@ const ChatPage= ()=>{
         messageSubscription();
     });
 
-    const sendMessage= async ()=>{
-        if(message){
+    const sendMessage= async (type="text",file=null)=>{
+        console.log(type);
+        if(message || type=="media"){
+
             let messageBody={
                 message_id: Utility.getRandom(),
                 sent_by: state.user.user_id,
                 channel: `${state.user.user_id},${state.chattingWith.user_id}`,
-                type: "text",
+                type: type,
                 message: message,
-                file_url: null,
+                file_url: file,
                 time: +Date.now() 
             };
             const send_response= await db.collection("messages").add(messageBody);
@@ -76,6 +78,7 @@ const ChatPage= ()=>{
         });
 
         console.log(image);
+        await sendMessage("media", image.base64String);
     }
 
     return (

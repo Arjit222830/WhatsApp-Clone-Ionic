@@ -20,3 +20,10 @@ export const setChattingWith  = (contact)=>{
         payload: contact
     }
 }
+
+export const lastMessage= (user)=>{
+    return {
+        type: "setLastMessage",
+        payload:user
+    }
+}
